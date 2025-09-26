@@ -1,0 +1,1501 @@
+openapi: 3.0.3
+info:
+  title: API Documentation
+  version: 1.0.0
+  description: API documentation converted from Postman collection
+servers:
+  - url: https://api-mw-preprod.space.awsmpsa.com
+    description: API Server
+
+paths:
+  /shop/v1/dealers:
+    get:
+      summary: dealer-list
+      description: GET operation
+      tags: [Dealer]
+      parameters:
+        - $ref: '#/components/parameters/brand'
+        - $ref: '#/components/parameters/country'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/latitude'
+        - $ref: '#/components/parameters/longitude'
+        - $ref: '#/components/parameters/source'
+        - $ref: '#/components/parameters/model'
+        - $ref: '#/components/parameters/country_apv'
+        - $ref: '#/components/parameters/token'
+        - $ref: '#/components/parameters/type'
+        - $ref: '#/components/parameters/contentType'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              example:
+                success:
+                  - name: BORNE DEPOT APRES-VENTE 24/7
+                    site_geo: "0000112455"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /me/v1/user_data/favorite_dealer:
+    post:
+      summary: Set Preferred Dealer
+      description: POST operation
+      tags: [Dealer]
+      parameters:
+        - $ref: '#/components/parameters/brand'
+        - $ref: '#/components/parameters/country'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/source'
+        - $ref: '#/components/parameters/os'
+        - $ref: '#/components/parameters/accept'
+        - $ref: '#/components/parameters/token'
+        - $ref: '#/components/parameters/contentType'
+        - $ref: '#/components/parameters/type'
+        - $ref: '#/components/parameters/vin'
+      requestBody:
+        $ref: '#/components/requestBodies/FavoriteDealerRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              example:
+                success: true
+                data:
+                  site_geo: "0000112455"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /me/v1/preferences/favorite-dealer:
+    get:
+      summary: Get Preferred Dealer
+      description: GET operation
+      tags: [Dealer]
+      parameters:
+        - $ref: '#/components/parameters/brand'
+        - $ref: '#/components/parameters/country'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/source'
+        - $ref: '#/components/parameters/os'
+        - $ref: '#/components/parameters/accept'
+        - $ref: '#/components/parameters/token'
+        - $ref: '#/components/parameters/contentType'
+        - $ref: '#/components/parameters/type'
+        - $ref: '#/components/parameters/vin'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              example:
+                success: true
+                data:
+                  site_geo: "0000112455"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /me/v1/user_data/favorite-dealer:
+    delete:
+      summary: Delete Preferred Dealer
+      description: DELETE operation
+      tags: [Dealer]
+      parameters:
+        - $ref: '#/components/parameters/brand'
+        - $ref: '#/components/parameters/country'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/source'
+        - $ref: '#/components/parameters/accept'
+        - $ref: '#/components/parameters/token'
+        - $ref: '#/components/parameters/contentType'
+        - $ref: '#/components/parameters/type'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              example:
+                success: true
+                data:
+                  deleted: true
+                  site_geo: "0000112455"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /me/v2/vehicles:
+    get:
+      summary: List all Vehicles
+      description: Retrieves all vehicles linked to the authenticated user.
+      tags: [Vehicles]
+      parameters:
+        - $ref: '#/components/parameters/Brand'
+        - $ref: '#/components/parameters/Language'
+        - $ref: '#/components/parameters/Country'
+        - $ref: '#/components/parameters/Source'
+        - $ref: '#/components/parameters/OS'
+      responses:
+        '200':
+          description: Successfully retrieved vehicles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V2VehiclesListResponse'
+
+  /me/v2/vehicles/add:
+    post:
+      summary: Add Vehicle
+      description: Adds a new vehicle to the authenticated user's account.
+      tags: [Vehicles]
+      parameters:
+        - $ref: '#/components/parameters/Brand'
+        - $ref: '#/components/parameters/Country'
+        - $ref: '#/components/parameters/Language'
+        - $ref: '#/components/parameters/Source'
+        - $ref: '#/components/parameters/OS'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddVehicleRequest'
+      responses:
+        '201':
+          description: Vehicle successfully added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddVehicleResponse'
+
+  /me/v1/vehicle-info/{VIN}:
+    get:
+      summary: Vehicle Info
+      description: Retrieves detailed information about a specific vehicle by VIN.
+      tags: [Vehicles]
+      parameters:
+        - $ref: '#/components/parameters/VINPath'
+        - $ref: '#/components/parameters/Country'
+        - $ref: '#/components/parameters/Language'
+        - $ref: '#/components/parameters/Source'
+        - $ref: '#/components/parameters/OS'
+        - $ref: '#/components/parameters/Brand'
+      responses:
+        '200':
+          description: Vehicle info retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleInfoResponse'
+
+  /me/v2/vehicles/{VIN}/nickname:
+    post:
+      summary: Edit Vehicle (nickname / licencePlate / mileage)
+      description: Update editable attributes for a vehicle.
+      tags: [Vehicles]
+      parameters:
+        - $ref: '#/components/parameters/VINPath'
+        - $ref: '#/components/parameters/Brand'
+        - $ref: '#/components/parameters/Country'
+        - $ref: '#/components/parameters/Language'
+        - $ref: '#/components/parameters/Source'
+        - $ref: '#/components/parameters/OS'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditVehicleRequest'
+      responses:
+        '200':
+          description: Vehicle attributes updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditVehicleResponse'
+
+  /me/v2/vehicles/{VIN}:
+    delete:
+      summary: Delete Vehicle (by VIN)
+      description: Remove a vehicle from the authenticated user's garage.
+      tags: [Vehicles]
+      parameters:
+        - $ref: '#/components/parameters/VINPath'
+        - $ref: '#/components/parameters/Brand'
+        - $ref: '#/components/parameters/Country'
+        - $ref: '#/components/parameters/Source'
+        - $ref: '#/components/parameters/OS'
+      responses:
+        '200':
+          description: Vehicle deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleDeleteSuccess'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleDeleteError'
+
+  /car/v1/vehicle/{VIN}:
+    get:
+      summary: Check VIN (vehicle basic check)
+      description: Returns existence and summary for a VIN in the Car service.
+      tags: [Car]
+      parameters:
+        - $ref: '#/components/parameters/VINPath'
+        - $ref: '#/components/parameters/Brand'
+        - $ref: '#/components/parameters/Country'
+        - $ref: '#/components/parameters/LanguageOptional'
+      responses:
+        '200':
+          description: VIN found and basic metadata returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckVINSuccess'
+        '404':
+          description: VIN not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckVINError'
+  
+  /settings/v1/data/encrypt:
+    post:
+      summary: Encrypt data
+      description: Encrypt arbitrary data for target use.
+      tags: [Settings]
+      parameters:
+        - $ref: '#/components/parameters/Brand'
+        - $ref: '#/components/parameters/Source'
+        - $ref: '#/components/parameters/Country'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EncryptDataRequest'
+      responses:
+        '200':
+          description: Returns encrypted data string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncryptDataResponse'
+
+  /shop/v1/catalog:
+    get:
+      summary: 'Catalog API'
+      description: 'GET operation'
+      tags: [Catalog]
+      parameters:
+        - name: brand
+          in: query
+          required: true
+          description: 'brand parameter'
+          schema:
+            type: string
+            example: JE
+        - name: country
+          in: query
+          required: true
+          description: 'country parameter'
+          schema:
+            type: string
+            example: IT
+        - name: language
+          in: query
+          required: true
+          description: 'language parameter'
+          schema:
+            type: string
+            example: it
+        - name: source
+          in: query
+          required: true
+          description: 'source parameter'
+          schema:
+            type: string
+            example: SPACEWEB
+        - name: token
+          in: header
+          required: true
+          description: 'token header'
+          schema:
+            type: string
+            example: c9370678-00c7-470d-bee6-6299db7ee6ba
+        - name: type
+          in: header
+          required: true
+          description: 'type header'
+          schema:
+            type: string
+            example: CVS
+        - name: vin
+          in: header
+          required: true
+          description: 'vin header'
+          schema:
+            type: string
+            example: VYEATTEN0SPU00175
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CatalogItem'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /shop/v1/charging-station/locations:
+    post:
+      summary: Locator
+      description: 'POST operation to find charging station locations'
+      tags: [Charging Station Locator]
+      parameters:
+        - name: brand
+          in: query
+          required: true
+          schema:
+            type: string
+            example: AP
+          description: 'brand parameter'
+        - name: fromDate
+          in: query
+          required: false
+          schema:
+            type: string
+            example: ""
+          description: 'fromDate parameter'
+        - name: toDate
+          in: query
+          required: false
+          schema:
+            type: string
+            example: ""
+          description: 'toDate parameter'
+        - name: country
+          in: query
+          required: true
+          schema:
+            type: string
+            example: FR
+          description: 'country parameter'
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: string
+            example: ""
+          description: 'offset parameter'
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 'null'
+          description: 'orderBy parameter'
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 'null'
+          description: 'sortBy parameter'
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+            example: '5'
+          description: 'limit parameter'
+        - name: source
+          in: query
+          required: true
+          schema:
+            type: string
+            example: SPACEWEB
+          description: 'source parameter'
+        - name: os
+          in: query
+          required: false
+          schema:
+            type: string
+            example: ios
+          description: 'os parameter'
+        - name: latitude
+          in: query
+          required: true
+          schema:
+            type: string
+            example: '45.2343'
+          description: mandatory
+        - name: longitude
+          in: query
+          required: true
+          schema:
+            type: string
+            example: '5.63434'
+          description: mandatory
+        - name: radius
+          in: query
+          required: false
+          schema:
+            type: string
+            example: '30'
+          description: optional
+        - name: token
+          in: header
+          required: true
+          schema:
+            type: string
+            example: 51011e83-7296-4fcc-a3f3-508c13fd1bf7
+          description: 'token header'
+        - name: type
+          in: header
+          required: true
+          schema:
+            type: string
+            example: CVS
+          description: 'type header'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      field:
+                        type: string
+                        example: city
+                      operator:
+                        type: string
+                        example: equal
+                      value:
+                        type: string
+                        example: Wyoming
+              example:
+                filters:
+                  - field: city
+                    operator: equal
+                    value: Wyoming
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChargingStationResponse'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+      
+components:
+  parameters:
+    # Lowercase parameters (original set)
+    brand:
+      name: brand
+      in: query
+      required: true
+      schema: 
+        type: string
+        example: JE
+      description: brand parameter
+    country:
+      name: country
+      in: query
+      required: true
+      schema: 
+        type: string
+        example: IT
+      description: country parameter
+    language:
+      name: language
+      in: query
+      required: true
+      schema: 
+        type: string
+        example: fr
+      description: language parameter
+    latitude:
+      name: latitude
+      in: query
+      required: true
+      schema: 
+        type: string
+        example: '45.46796'
+      description: latitude parameter
+    longitude:
+      name: longitude
+      in: query
+      required: true
+      schema: 
+        type: string
+        example: '9.18178'
+      description: longitude parameter
+    source:
+      name: source
+      in: query
+      required: true
+      schema: 
+        type: string
+        example: SPACEWEB
+      description: source parameter
+    model:
+      name: model
+      in: query
+      required: true
+      schema: 
+        type: string
+        example: o2x
+      description: model parameter
+    country_apv:
+      name: country_apv
+      in: query
+      required: true
+      schema: 
+        type: string
+        example: FR
+      description: country_apv parameter
+    os:
+      name: os
+      in: query
+      required: false
+      schema: 
+        type: string
+        example: and
+      description: os parameter
+    token:
+      name: token
+      in: header
+      required: true
+      schema: 
+        type: string
+        example: '{{access_token}}'
+      description: token header
+    type:
+      name: type
+      in: header
+      required: true
+      schema: 
+        type: string
+        example: CVS
+      description: type header
+    contentType:
+      name: Content-Type
+      in: header
+      required: true
+      schema: 
+        type: string
+        example: application/json
+      description: Content-Type header
+    accept:
+      name: accept
+      in: header
+      required: true
+      schema: 
+        type: string
+        example: application/json
+      description: accept header
+    vin:
+      name: vin
+      in: header
+      required: true
+      schema: 
+        type: string
+        example: VYEATTEN0SPU00033
+      description: vin header
+    
+    # Capitalized parameters (second set)
+    VINPath:
+      name: VIN
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Vehicle Identification Number
+    Brand:
+      name: brand
+      in: query
+      required: true
+      schema:
+        type: string
+        example: JE
+      description: Vehicle brand code
+    Country:
+      name: country
+      in: query
+      required: true
+      schema:
+        type: string
+        example: IT
+      description: Country code
+    Language:
+      name: language
+      in: query
+      required: true
+      schema:
+        type: string
+        example: fr
+      description: ISO language code
+    LanguageOptional:
+      name: language
+      in: query
+      required: false
+      schema:
+        type: string
+        example: it
+      description: ISO language code (optional)
+    Source:
+      name: source
+      in: query
+      required: true
+      schema:
+        type: string
+        example: APP
+      description: Request source identifier
+    OS:
+      name: os
+      in: query
+      required: false
+      schema:
+        type: string
+        example: and
+      description: Optional legacy OS parameter
+
+  requestBodies:
+    FavoriteDealerRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              site_geo:
+                type: string
+            example:
+              site_geo: "0000112455"
+
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    V2VehiclesListResponse:
+      type: object
+      properties:
+        success:
+          type: array
+          items:
+            $ref: '#/components/schemas/VehicleSummary'
+
+    AddVehicleRequest:
+      type: object
+      required: [vin, mileage]
+      properties:
+        vin:
+          type: string
+          example: VYEATTEN0SPU00033
+        mileage:
+          type: string
+          example: "5"
+
+    AddVehicleResponse:
+      type: object
+      properties:
+        success:
+          type: string
+          example: Vehicle added Successfully
+
+    EditVehicleRequest:
+      type: object
+      properties:
+        nickName:
+          type: string
+          example: "J4U test"
+        licencePlate:
+          type: string
+          example: "MY-PLATE-123"
+        mileage:
+          type: integer
+          example: 5
+
+    EditVehicleResponse:
+      type: object
+      properties:
+        success:
+          type: object
+          required: [nickName, licencePlate, timestamp, value, source]
+          properties:
+            nickName:
+              type: string
+              example: "J4U test"
+            licencePlate:
+              type: string
+              example: "myPlate"
+            timestamp:
+              type: integer
+              example: 1748340754
+            value:
+              type: integer
+              example: 5
+            source:
+              type: integer
+              example: 5
+
+    VehicleSummary:
+      type: object
+      required: [vin, lcdv, visual, short_label, isOrder, sdp]
+      properties:
+        vin:
+          type: string
+          example: VYEATTEN0SPU00025
+        lcdv:
+          type: string
+          example: 1JJPSYNZDFL0A0A0M0ZZGHFY
+        visual:
+          type: string
+          format: uri
+          example: https://media-develop.space.../citroenC4.jpg
+        short_label:
+          type: string
+          example: A5U
+        isOrder:
+          type: boolean
+          example: false
+        sdp:
+          type: string
+          example: SSDP
+
+    VehicleInfoResponse:
+      type: object
+      properties:
+        success:
+          type: object
+          properties:
+            vehicleInfo:
+              $ref: '#/components/schemas/VehicleSummaryDetailed'
+            eligibility:
+              type: array
+              items:
+                type: string
+              example: ["CONNECTPLUS", "CONNECTONE"]
+            vehicleProducts:
+              type: object
+              properties:
+                productsCatalog:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductCatalogItem'
+                purchasedProducts:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/PurchasedProduct'
+                productGroupNameStatus:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  example:
+                    connectplus: "disabled"
+                    connectone: "enabled"
+            settingsUpdate:
+              type: integer
+              example: 1757671009
+
+    VehicleSummaryDetailed:
+      type: object
+      required: [vin, lcdv, visual, short_label, type_vehicle, mileage, brand, country, sdp, isOrder]
+      properties:
+        vin:
+          type: string
+          example: VYEATTEN0SPU00084
+        lcdv:
+          type: string
+          example: 1JJPSYNZDFL0A0A0M0ZZGHFY
+        visual:
+          type: string
+          format: uri
+          example: https://media-preprod.space.awsmpsa.com/uploads/APP/jeep-j4u.png
+        short_label:
+          type: string
+          example: J4U
+        nickname:
+          type: string
+          example: ""
+        attributes:
+          type: array
+          items:
+            type: string
+          example: ["D3201CD", "D7K02CD"]
+        type_vehicle:
+          type: integer
+          example: 4
+        mileage:
+          type: object
+          required: [value, date, timestamp, unit]
+          properties:
+            value:
+              type: integer
+              example: 0
+            date:
+              type: integer
+              example: 1757671009
+            timestamp:
+              type: integer
+              example: 1757671009
+            unit:
+              type: string
+              example: km
+        versionId:
+          type: string
+          example: 1JJPSYNZDFL0A0A0M0ZZGHFY
+        brand:
+          type: string
+          example: JE
+        subMake:
+          type: string
+          example: ""
+        country:
+          type: string
+          example: GB
+        regTimeStamp:
+          type: integer
+          example: 1757671008
+        year:
+          type: string
+          example: 0A
+        sdp:
+          type: string
+          example: SSDP
+        isOrder:
+          type: boolean
+          example: false
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/VehicleFeature'
+        addStatus:
+          type: string
+          example: COMPLETE
+        isO2x:
+          type: boolean
+          example: false
+        plugType:
+          type: string
+          example: CCS2
+
+    VehicleFeature:
+      type: object
+      required: [code, status, backend]
+      properties:
+        code:
+          type: string
+          example: VEHICLE_INFO
+        status:
+          type: string
+          example: enable
+        value:
+          type: string
+          example: NAE01
+        backend:
+          type: string
+          example: SpaceMid
+        config:
+          type: object
+          additionalProperties: true
+          example: 
+            engine: BEV
+
+    ProductCatalogItem:
+      type: object
+      required: [catalogId, price, title, shortDescription, type, id, category]
+      properties:
+        catalogId:
+          type: string
+          example: 8adce73e95754f3701958057d21f0ccd
+        price:
+          type: number
+          example: 0
+        title:
+          type: string
+          example: "Il pacchetto che estende l'esperienza connessa con il tuo veicolo"
+        shortDescription:
+          type: string
+          example: "<p>Estendi la connettività...</p>"
+        homePage:
+          type: string
+          example: https://ppr.services-store.jeep.com/it-
+        productUrl:
+          type: string
+          example: https://ppr.services-store.jeep.com/it-/node/155
+        productUrlSso:
+          type: string
+          example: https://ppr.services-store.jeep.com/it-/login-redirect?...
+        topMainImage:
+          type: string
+          example: https://ppr.services-store.jeep.com/sites/default/files/connectplus.png
+        urlCvs:
+          type: string
+          example: https://ppr.services-store.jeep.com/it-/login-redirect?...
+        type:
+          type: string
+          example: bundle
+        offer:
+          type: object
+          properties:
+            pricingModel:
+              type: string
+              example: One Off
+            fromPrice:
+              type: number
+              example: 0
+            price:
+              type: object
+              properties:
+                periodType:
+                  type: string
+                  example: ""
+                price:
+                  type: number
+                  example: 0
+                currency:
+                  type: string
+                  example: EUR
+                typeDiscount:
+                  type: string
+                  example: FlatFee
+            isFreetrial:
+              type: integer
+              example: 0
+        isBundle:
+          type: boolean
+          example: false
+        id:
+          type: string
+          example: connectplus
+        category:
+          type: string
+          example: others
+
+    PurchasedProduct:
+      type: object
+      properties:
+        type:
+          type: string
+          example: CONNECTONE
+        category:
+          type: string
+          example: others
+        status:
+          type: integer
+          example: 2
+        active:
+          type: boolean
+          example: true
+        validity:
+          type: object
+          properties:
+            start:
+              type: integer
+              example: 1757635200
+            end:
+              type: integer
+              example: 2073168000
+        isExtensible:
+          type: boolean
+          example: false
+        title:
+          type: string
+          example: Connect ONE
+        statusReason:
+          type: string
+          example: ""
+        subscriptionTechCreationDate:
+          type: string
+          example: ""
+        hasFreeTrial:
+          type: boolean
+          example: false
+        priority:
+          type: integer
+          example: 3
+        associationId:
+          type: string
+          example: ""
+        associationLevel:
+          type: string
+          example: MEDIUM
+        topMainImage:
+          type: string
+          example: https://ppr.services-store.jeep.com/sites/default/files/2025-04/connect%20ONE%20homepage.png
+        urlSso:
+          type: string
+          example: https://ppr.services-store.jeep.com/it-IT/login-redirect?...
+        urlCvs:
+          type: string
+          example: https://ppr.services-store.jeep.com/it-IT/login-redirect?...
+
+    VehicleDeleteSuccess:
+      type: object
+      properties:
+        success:
+          oneOf:
+            - type: string
+              example: Vehicle deleted successfully
+            - type: object
+              additionalProperties: true
+
+    VehicleDeleteError:
+      type: object
+      properties:
+        error:
+          type: object
+          required: [message]
+          properties:
+            message:
+              type: string
+              example: '{"reason":"An error has occurred","userId":"1dc33..."}'
+
+    CheckVINSuccess:
+      type: object
+      properties:
+        success:
+          type: object
+          required: [vin, lcdv, short_label, type_vehicle, attributes, types, visual, isO2x]
+          properties:
+            vin:
+              type: string
+              example: VYEATTEN0SPU00033
+            lcdv:
+              type: string
+              example: 1JJPSYNZDFL0A0A0M0ZZGHFY
+            short_label:
+              type: string
+              example: J4U
+            type_vehicle:
+              type: integer
+              example: 4
+            attributes:
+              type: array
+              items:
+                type: string
+              example: ["D7K02CD", "DCD00CD"]
+            types:
+              type: array
+              items:
+                type: string
+              example: ["ELECTRIC"]
+            visual:
+              type: string
+              format: uri
+              example: https://media-develop.space.../citroenC4.jpg
+            isO2x:
+              type: boolean
+              example: false
+
+    CheckVINError:
+      type: object
+      properties:
+        error:
+          type: object
+          required: [message]
+          properties:
+            message:
+              type: string
+              example: "vehicle not found"
+
+    EncryptDataRequest:
+      type: object
+      required: [data, target]
+      properties:
+        data:
+          type: string
+          example: ZARHBTTG3R9011445
+        target:
+          type: string
+          example: SAMS
+
+    EncryptDataResponse:
+      type: object
+      properties:
+        success:
+          type: object
+          required: [data]
+          properties:
+            data:
+              type: string
+              example: CyqdccmNSTbKPFib8Bm2m+zwI4IaCr...
+
+    CatalogItem:
+      type: object
+      properties:
+        catalogId:
+          type: string
+          example: 8adce73e95754f3701958057d21f0ccd
+        target:
+          type: string
+          example: B2C
+        title:
+          type: string
+          example: "Il pacchetto che estende l'esperienza connessa con il tuo veicolo"
+        shortDescription:
+          type: string
+          example: "<p>Estendi la connettività...</p>"
+        fullDescription:
+          type: string
+        topMainImage:
+          type: string
+          format: uri
+        familyName:
+          type: string
+          example: CONNECTPLUS
+        isBundle:
+          type: boolean
+          example: true
+        offers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+        tnc:
+          $ref: '#/components/schemas/Tnc'
+        consentsLabel:
+          type: string
+        disclaimerLabel:
+          type: string
+        standaloneProducts:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandaloneProduct'
+        type:
+          type: string
+          example: BUNDLE
+        category:
+          type: string
+          example: others
+        id:
+          type: string
+          example: connectplusfca
+
+    Offer:
+      type: object
+      properties:
+        id:
+          type: string
+        duration:
+          type: string
+        effectiveStartDate:
+          type: string
+          format: date-time
+        effectiveEndDate:
+          type: string
+          format: date-time
+        priority:
+          type: string
+          nullable: true
+        isFreeTrial:
+          type: integer
+        freeTrialDuration:
+          type: string
+        freeTrialDurationType:
+          type: string
+        category:
+          type: string
+        fromPrice:
+          type: string
+          nullable: true
+        durationType:
+          type: string
+        isBundleOffer:
+          type: integer
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+
+    Price:
+      type: object
+      properties:
+        id:
+          type: string
+        currency:
+          type: string
+        price:
+          type: number
+        typeDiscount:
+          type: string
+        periodType:
+          type: string
+
+    Tnc:
+      type: object
+      properties:
+        version:
+          type: string
+        tncLabel:
+          type: string
+        id:
+          type: string
+        tncUrl:
+          type: string
+
+    StandaloneProduct:
+      type: object
+      properties:
+        productLabel:
+          type: string
+        icon:
+          type: string
+          format: uri
+    
+    Error400:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+
+    Error401:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Unauthorized"
+
+    ChargingStationResponse:
+      type: object
+      properties:
+        chargeStations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChargeStation'
+        count:
+          type: integer
+          example: 17
+
+    ChargeStation:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1ed20f2c-5c79-4841-b692-3ae4d93cc666"
+        locationId:
+          type: string
+          example: "USEVCL1072221"
+        brand:
+          type: string
+          example: "EV Connect"
+        address:
+          $ref: '#/components/schemas/Address'
+        position:
+          $ref: '#/components/schemas/Position'
+        poi:
+          $ref: '#/components/schemas/POI'
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Connector'
+
+    Address:
+      type: object
+      properties:
+        country:
+          type: string
+          example: "USA"
+        countryCode:
+          type: string
+          example: "USA"
+        countryCodeISO3:
+          type: string
+          example: ""
+        countrySecondarySubdivision:
+          type: string
+          example: ""
+        countrySubdivision:
+          type: string
+          example: ""
+        countrySubdivisionName:
+          type: string
+          example: ""
+        countryTertiarySubdivision:
+          type: string
+          example: ""
+        extendedPostalCode:
+          type: string
+          example: ""
+        freeformAddress:
+          type: string
+          example: "120 W Camden Wyoming Ave, Wyoming, Delaware, 19934, USA"
+        localName:
+          type: string
+          example: ""
+        municipality:
+          type: string
+          example: "Wyoming"
+        postalCode:
+          type: string
+          example: "19934"
+        streetName:
+          type: string
+          example: "120 W Camden Wyoming Ave"
+        streetNumber:
+          type: string
+          example: ""
+
+    Position:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: float
+          example: 39.117527
+        lon:
+          type: number
+          format: float
+          example: -75.557854
+
+    POI:
+      type: object
+      properties:
+        acceptablePayments:
+          type: array
+          items:
+            type: string
+        accessType:
+          type: string
+          example: ""
+        name:
+          type: string
+          example: "EV Connect"
+        twentyFourSeven:
+          type: boolean
+          example: true
+        partnerIDs:
+          type: array
+          items:
+            type: string
+        specialRestrictions:
+          type: array
+          items:
+            type: string
+
+    Connector:
+      type: object
+      properties:
+        availability:
+          $ref: '#/components/schemas/Availability'
+        compatible:
+          type: boolean
+          example: false
+        powerLevel:
+          $ref: '#/components/schemas/PowerLevel'
+        total:
+          type: integer
+          example: 1
+        type:
+          type: string
+          example: "J1772"
+        evseId:
+          type: string
+          example: "24671801"
+        connectorId:
+          type: string
+          example: "USEVCP1072221*1*91"
+        priceText:
+          type: string
+          example: "Energy\n   0.35 USD per kWh\nParking (While not charging)\n   10 USD per hour After 60 mins of grace Period\nParking (While plugged in)\n   Free\n"
+        speedShortCode:
+          type: string
+          example: "Regular"
+        capabilities:
+          type: array
+          items:
+            type: string
+
+    Availability:
+      type: object
+      properties:
+        available:
+          type: integer
+          example: 1
+        occupied:
+          type: integer
+          example: 0
+        outOfService:
+          type: integer
+          example: 0
+        reserved:
+          type: integer
+          example: 0
+        unknown:
+          type: integer
+          example: 0
+
+    PowerLevel:
+      type: object
+      properties:
+        chargeTypeAvailability:
+          $ref: '#/components/schemas/ChargeTypeAvailability'
+
+    ChargeTypeAvailability:
+      type: object
+      properties:
+        fastCharge:
+          type: integer
+          example: 0
+        regularCharge:
+          type: integer
+          example: 1
+        slowCharge:
+          type: integer
+          example: 0
+        unknown:
+          type: integer
+          example: 0
